@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+</head>
+<body>
+    <%- include('../partials/nav_fotter.ejs')  %>
+    <form action="/register" method="post">
+        <div>
+            <label for="name">Name: </label>
+            <input type="text" name="name" >
+        </div>
+        <div>
+            <label for="email">Email: </label>
+            <input type="email" name="email" >
+        </div>
+         <div>
+            <label for="password">Password: </label>
+            <input type="text" name="password" >
+        </div>
+         <div>
+            <label for="confirmPassword">Confirm Password: </label>
+            <input type="text" name="confirmPassword" >
+        </div>
+        <%if (errors && errors.length >0){ %>
+            <% errors.forEach((error)=>{ %>
+                <p><%= error %></p>
+                <% }) %>
+            <% } %>
+        <div>
+            <button type="submit">Register</button>
+        </div>
+
+    </form>
+</body>
+</html>
