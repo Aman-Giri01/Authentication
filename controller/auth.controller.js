@@ -1,7 +1,8 @@
-import { clearUserSession, createAccessToken, createRefreshToken, createSession, createUser, findUserById, getUserByEmail } from "../model/auth.model.js";
+import { clearUserSession, clearVerifyEmailTokens, createAccessToken, createRefreshToken, createSession, createUser,  findUserById, findVerficationEmailToken,  getUserByEmail,  sendNewVerifyEmailLink, verifyUserEmailAndUpdate } from "../model/auth.model.js";
 import argon2 from 'argon2';
-import { loginUserSchema, registerUserSchema } from "../validators/auth-validator.js";
+import { loginUserSchema, registerUserSchema, verifyEmailSchema } from "../validators/auth-validator.js";
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
+
 
 export const indexPage=async(req,res)=>{
     // const isLoggedIn=req.cookies.isLoggedIn; // cookieparser in app.js is used for this
@@ -42,7 +43,9 @@ export const postRegister=async(req,res)=>{
         }
         
         const hashedPassword= await argon2.hash(password);
-        const user= await createUser({name,email,password:hashedPassword})
+        const user= await createUser({name,email,password:hashedPassword});
+
+        await sendNewVerifyEmailLink({userId:user._id,email});
         
         return res.redirect('/login');
     }catch(err){
@@ -115,6 +118,7 @@ const accessToken=createAccessToken({
     id:user._id,
     name:user.name,
     email:user.email,
+    isEmailValid:user.isEmailValid,
     sessionId
 });
 
@@ -179,15 +183,57 @@ export const getProfilePage=async(req,res)=>{
   const user= await findUserById(req.user.id);
   if(!user) return res.redirect('/login');
 
-  console.log(user.createdAt);
-
   return res.render('auth/profile',{
      user:{
         id:user.id,
         name:user.name,
         email:user.email,
-        createdAt:user.createdAt
+        createdAt:user.createdAt,
+        isEmailValid:user.isEmailValid
      },
 
   })
 };
+
+// ---------------- Email verification -------------
+
+export const getVerifyEmail=async(req,res)=>{
+    if(!req.user || req.user.isEmailValid) return res.redirect('/');
+    return res.render('auth/verify-email',{
+        email:req.user.email
+    })
+}
+    //----------------Resend Verification Link ------------
+
+export const resendVerificationLink=async(req,res)=>{
+   if(!req.user) return res.redirect("/");
+   const user=await findUserById(req.user.id);
+   if(!user || user.isEmailValid) return res.redirect("/");
+
+console.log(req.user)
+     await sendNewVerifyEmailLink({userId:req.user.id,email:req.user.email});
+  
+
+   res.redirect('/verify-email');
+
+}
+
+  //--------verifyEmailToken
+  
+  export const verifyEmailToken=async(req,res)=>{
+    const {data,error}=verifyEmailSchema.safeParse(req.query);
+    if(error){
+        return res.send("Verification link invalid or expires!");
+    }
+    const token= await findVerficationEmailToken(data);
+    if(!token) res.send("Verification link invalid or expired!");
+
+    await verifyUserEmailAndUpdate(token.email);
+
+    clearVerifyEmailTokens(token.email).catch(console.error);
+
+    return res.redirect('/profile');
+
+  }
+
+//------End Email verification----------------- 

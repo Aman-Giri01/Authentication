@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
+import { required } from "zod/v4-mini";
 
 const userSchema=mongoose.Schema({
     name:{
@@ -10,6 +11,11 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true,
         unique:true
+    },
+    isEmailValid:{
+         type:Boolean,
+         required:true,
+         default:false
     },
     password:{
         type:String,
@@ -48,3 +54,34 @@ const sessionSchema= mongoose.Schema({
 });
 
 export const session=mongoose.model('Session',sessionSchema);
+
+const verifyEmailSchema= mongoose.Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+    token:{
+        type:String,
+        length:8,
+        required:true
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now,
+        required:true
+    },
+    expiresAt:{
+        type:Date,
+        required:true,
+        default:()=>new Date(Date.now()+ 24*60*60*1000)
+    }
+
+
+    }
+);
+
+// Optional: Create an index to automatically remove expired documents
+verifyEmailSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
+export const emailSchema=mongoose.model('Email',verifyEmailSchema);

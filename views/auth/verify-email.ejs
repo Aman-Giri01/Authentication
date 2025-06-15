@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>verify email</title>
+</head>
+<body>
+    <%- include('../partials/nav_fotter')%>
+    <h1>Verify your email</h1>
+    <% if(user) { %>
+        <h2>You are Logged in</h2>
+    <% } else { %>
+        <h2>You are not logged in </h2>
+    <% } %>   
+
+    <div>
+        <p>Email: <%= email %></p>
+        <p>Your email has not been verifed yet.Please verify your
+            email by entering the 8 digit code or request a new verification link.
+        </p>
+        <form action="/resend-verification-link"
+        method="post">
+            <button type="submit">Resend Verification Link</button>
+        </form>
+    </div>
+    <div>
+        <form action="/verify-email-token" method="get">
+            <div>
+                <label for="token">Enter 8 digit verification Code:</label>
+                <input 
+                    type="text"
+                    name="token"
+                    id="token"
+                    maxlength="8"
+                    required
+                    pattern="\d{8}"
+                    title="Please enter an 8-digit token">
+            </div>
+            <input type="hidden" value="<%= email %>" name="email">
+            <button type="submit">Verify Code</button>
+        </form>
+    </div>
+
+</body>
+</html>

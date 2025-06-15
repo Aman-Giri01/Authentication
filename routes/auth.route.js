@@ -27,4 +27,13 @@ router.route('/logout')
 router.route('/profile')
 .get(auth.getProfilePage);
 
+router.route('/verify-email')
+.get(auth.getVerifyEmail)
+
+router.route('/resend-verification-link')
+.post(auth.resendVerificationLink);
+
+router.route('/verify-email-token')
+.get(auth.verifyEmailToken);
 export const authRoute=router;
+

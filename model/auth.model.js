@@ -1,7 +1,9 @@
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
-import { session, userData } from "../config/db.js";
+import { session, userData,emailSchema } from "../config/db.js";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
+import {sendEmail} from '../lib/nodemailer.js'
+import crypto from 'crypto';
 
 
 
@@ -51,8 +53,8 @@ export const createSession=async(userId,{ip,userAgent})=>{
 }
 
 // access_token (jwt sign)
-export const createAccessToken=({id,name,email,sessionId})=>{
-    return jwt.sign({id,name,email,sessionId},process.env.JWT_SECRET,{
+export const createAccessToken=({id,name,email,sessionId,isEmailValid})=>{
+    return jwt.sign({id,name,email,sessionId,isEmailValid},process.env.JWT_SECRET,{
     expiresIn:ACCESS_TOKEN_EXPIRY/MILLISECONDS_PER_SECOND  //15 min
   })
 
@@ -100,6 +102,7 @@ export const refreshTokens=async(refresh_token)=>{
       id:user._id,
       name:user.name,
       email:user.email,
+      isEmailValid:user.isEmailValid,
       sessionId:currentSession._id
     }
 
@@ -125,3 +128,101 @@ export const clearUserSession = async (userId) => {
   console.log("Deleted sessions:", result.deletedCount);
   return result;
 };
+// -------------end hybrid token----------------------
+
+// -------------------------- verify Email ----------------
+    //generate Random Token
+
+export const generateRandomToken=(digit=8)=>{
+  const min=10**(digit-1) //10000000
+  const max=10**digit;  //100000000
+
+  return crypto.randomInt(min,max).toString();
+}
+
+// insertVerifyEmailToken
+
+export const insertVerifyEmailToken=async({userId,token})=>{
+  
+  await emailSchema.deleteMany({expiresAt: { $lt: new Date() }});
+
+    // Delete any existing token for this user
+  await emailSchema.deleteOne({ userId });
+
+  return await emailSchema.create({
+    userId,
+    token,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+   });
+
+};
+// createVerifyEmailLink
+
+export const createVerifyEmailLink=async({email,token})=>{
+  // const uriEncodedEmail=encodeURIComponent(email);
+  // return `${process.env.FRONTEND_URL}/verify-email-token?token=${token}&email=${uriEncodedEmail}`
+
+   const url = new URL(`${process.env.FRONTEND_URL}/verify-email`);
+  url.searchParams.append('token', token);
+  url.searchParams.append('email', email);
+  return url.toString();
+
+};
+
+// findVerficationEmailToken
+
+export const findVerficationEmailToken=async({token,email})=>{
+  const user = await userData.findOne({ email });
+  if (!user) return null;
+
+  const tokenData= await emailSchema.findOne({
+    userId:user._id,
+    token,
+    expiresAt:{$gte: new Date()}
+  });
+  if (!tokenData) return null;
+
+  return {
+    userId: user._id,
+    email: user.email,
+    token: tokenData.token,
+    expiresAt: tokenData.expiresAt,
+  };
+}
+// verifyUserEmailAndUpdate
+export const verifyUserEmailAndUpdate=async(email)=>{
+  return await userData.updateOne({email},{$set:{isEmailValid:true}})
+}
+
+// clearVerifyEmailTokens
+export const clearVerifyEmailTokens=async(email)=>{
+  const user = await userData.findOne({ email });
+  if (!user) return;
+
+  return await emailSchema.deleteMany({
+    userId: user._id,
+  });
+}
+
+export const sendNewVerifyEmailLink=async({userId,email})=>{
+ const randomToken=generateRandomToken();
+
+   await insertVerifyEmailToken({userId,token:randomToken});
+
+   const verifyEmailLink= await createVerifyEmailLink({
+    email:email,
+    token:randomToken
+   });
+
+   sendEmail({
+    to:email,
+    subject:"verify your email",
+    html:`
+    <h1> Click the link below ti verify your email</h1>
+    <p>You can use this token: <code>${randomToken}</code></p>
+    <a href="${verifyEmailLink}">Verify Email </a>`
+   }).catch(console.error);
+
+  }
+
+//----------------------- end verify email ----------------------------

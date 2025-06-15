@@ -7,9 +7,19 @@
 </head>
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
+    <div><%= user.id %></div>
     <div><%= user.name %></div>
     <div><%= user.email %></div>
-    <div><%= user.created_at %></div>
+    <div><%= user.createdAt %></div>
+
+    <span>Email Verification:</span>
+    <% if(user.isEmailValid) { %>
+        <span>verified</span>
+        <% }else { %>
+         <span>Not verified</span>
+         <a href="/verify-email">Verify Now</a>
+         <% } %>
+
 
 </body>
 </html>
