@@ -35,5 +35,13 @@ router.route('/resend-verification-link')
 
 router.route('/verify-email-token')
 .get(auth.verifyEmailToken);
+
+router.route('/edit-profile')
+.get(auth.getEditProfilePage)
+.post(auth.postEditProfile)
+
+router.route('/change-password')
+.get(auth.getChangePassword)
+.post(auth.postChangePassword);
 export const authRoute=router;
 

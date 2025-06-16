@@ -1,7 +1,8 @@
 import { clearUserSession, clearVerifyEmailTokens, createAccessToken, createRefreshToken, createSession, createUser,  findUserById, findVerficationEmailToken,  getUserByEmail,  sendNewVerifyEmailLink, verifyUserEmailAndUpdate } from "../model/auth.model.js";
 import argon2 from 'argon2';
-import { loginUserSchema, registerUserSchema, verifyEmailSchema } from "../validators/auth-validator.js";
+import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema } from "../validators/auth-validator.js";
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
+import { userData } from "../config/db.js";
 
 
 export const indexPage=async(req,res)=>{
@@ -237,3 +238,64 @@ console.log(req.user)
   }
 
 //------End Email verification----------------- 
+
+// --------------------- Edit Profile And Password-----------------------------------
+
+export const getEditProfilePage=async(req,res)=>{
+    if(!req.user) return res.redirect("/");
+
+    const user = await findUserById(req.user.id);
+    if(!user) return res.status(404).send("usernot found");
+
+    return res.render("auth/edit-profile",{
+        name:user.name,
+        errors:req.flash("errors")
+    });
+
+}
+
+export const postEditProfile=async(req,res)=>{
+    const {newName}=req.body
+    const user= await userData.findByIdAndUpdate(req.user.id,
+        {name:newName.trim()},
+        {new:true});
+    return res.redirect('/profile');
+}
+
+// changePassword
+
+export const getChangePassword=async(req,res)=>{
+    if(!req.user) return res.redirect("/");
+    return res.render('auth/change-password',{
+        errors:req.flash("errors")
+    })
+}
+// post change password
+export const postChangePassword=async(req,res)=>{
+    const {data,error}=verifyPasswordSchema.safeParse(req.body);
+    if(error){
+        const errors=error.errors[0].message;
+        req.flash("errors",errors)
+        return res.redirect('/change-password');
+    }
+
+    const {currentPassword,newPassword}=data
+
+    const user=await findUserById(req.user.id);
+    if (!user) return res.status(404).send("USer not found");
+    const isPasswordValid= await argon2.verify(user.password,currentPassword)
+        console.log(isPasswordValid);
+        if(!isPasswordValid)  {
+            req.flash("errors","Current Password that you entered is invalid");
+            return res.redirect('/change-password')
+        }
+    
+    const hashedNewPassword = await argon2.hash(newPassword);
+    await userData.findByIdAndUpdate(user._id,
+        {password:hashedNewPassword},
+        {new:true}
+    )
+    return res.redirect('/profile')
+
+}
+// ----------------------End Edit Profile ------------------------------
