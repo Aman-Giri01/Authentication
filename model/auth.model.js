@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN_EXPIRY, MILLISECONDS_PER_SECOND, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
-import { session, userData,emailSchema } from "../config/db.js";
+import { session, userData,emailSchema, resetPassword } from "../config/db.js";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
 import {sendEmail} from '../lib/nodemailer.js'
@@ -226,3 +226,56 @@ export const sendNewVerifyEmailLink=async({userId,email})=>{
   }
 
 //----------------------- end verify email ----------------------------
+
+// ------------------------ Forgot Password----------------
+
+export const findUserByEmail=async(email)=>{
+  return await userData.findOne({email});
+}
+
+export const createResetPasswordLink=async({userId})=>{
+  // random token
+  const randomToken=crypto.randomBytes(32).toString("hex");
+
+  // convert random token into hash
+  const tokenHash=crypto
+  .createHash("sha256")
+  .update(randomToken)
+  .digest("hex");
+
+  // delete previous tokens
+  await resetPassword.deleteMany({expiresAt: { $lt: new Date() }});
+
+    // Delete any existing token for this user
+  await resetPassword.deleteOne({ userId });
+
+  // insert into db
+  await resetPassword.create({
+    userId,
+    tokenHash:tokenHash,
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000)
+  })
+
+  return `${process.env.FRONTEND_URL}/reset-password/${randomToken}`
+
+}
+
+// get ResetPasswordToken
+
+export const getResetPasswordToken=async(token)=>{
+  const tokenHash=crypto.createHash('sha256').update(token).digest("hex");
+
+  const user=await resetPassword.findOne({
+    tokenHash,
+    expiresAt:{$gte:new Date()}
+  });
+
+  return user;
+}
+
+// clearResetPasswordToken
+export const clearResetPasswordToken=async(userId)=>{
+  await resetPassword.deleteMany({ userId });
+}
+
+// ------------------------end forgot password --------------------

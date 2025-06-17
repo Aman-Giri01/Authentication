@@ -1,8 +1,10 @@
-import { clearUserSession, clearVerifyEmailTokens, createAccessToken, createRefreshToken, createSession, createUser,  findUserById, findVerficationEmailToken,  getUserByEmail,  sendNewVerifyEmailLink, verifyUserEmailAndUpdate } from "../model/auth.model.js";
+import { clearResetPasswordToken, clearUserSession, clearVerifyEmailTokens, createAccessToken, createRefreshToken, createResetPasswordLink, createSession, createUser,  findUserByEmail,  findUserById, findVerficationEmailToken,  getResetPasswordToken,  getUserByEmail,  sendNewVerifyEmailLink, verifyUserEmailAndUpdate } from "../model/auth.model.js";
 import argon2 from 'argon2';
-import { loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema } from "../validators/auth-validator.js";
+import { emailSchemaCheck, loginUserSchema, registerUserSchema, verifyEmailSchema, verifyPasswordSchema, verifyResetPasswordSchema } from "../validators/auth-validator.js";
 import { ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } from "../config/constants.js";
 import { userData } from "../config/db.js";
+import { getHtmlFromMjmlTemplate } from "../emails/get-html-from-mjmltemplate.js";
+import { sendEmail } from "../lib/nodemailer.js";
 
 
 export const indexPage=async(req,res)=>{
@@ -75,7 +77,6 @@ export const postLogin=async(req,res)=>{
             return res.redirect('/login');
         }
         const {email,password}=data;
-
 
         const user= await getUserByEmail(email);
 
@@ -299,3 +300,96 @@ export const postChangePassword=async(req,res)=>{
 
 }
 // ----------------------End Edit Profile ------------------------------
+
+
+// ------------------------------------ Reset Password ------------------------
+
+export const getResetPasswordPage=async(req,res)=>{
+    return res.render('auth/forgot-password',{
+        formSubmitted:req.flash("formSubmitted")[0],
+        errors:req.flash("errors")
+    })
+
+}
+
+export const postResetPaswword=async(req,res)=>{
+    const {data,error}=emailSchemaCheck.safeParse(req.body);
+    if(error){
+        const errorMessages=error.errors.map((err)=>err.message);
+        req.flash("errors",errorMessages[0]);
+        return res.redirect('/reset-password');
+    }
+    const {email}=data;
+    const user=await findUserByEmail(email);
+
+    if(user){
+        const resetPasswordLink=await createResetPasswordLink({userId:user._id})
+    
+
+        const html= await getHtmlFromMjmlTemplate('reset-password-email',{
+            name:user.name,
+            link:resetPasswordLink
+
+        })
+        sendEmail({
+            to:user.email,
+            subject:"Reset Your Password",
+            html,
+        });
+    }
+    req.flash("formSubmitted",true);
+    return res.redirect('/reset-password')
+
+}
+
+export const getResetPasswordTokenPage=async(req,res)=>{
+    const {token}=req.params;
+    const passwordResetData=await getResetPasswordToken(token);
+
+    if(!passwordResetData) return res.send({message:"Look like your password reset link has either expired, or it is invlaid!"});
+
+    return res.render('auth/reset-password',{
+        formSubmitted:req.flash("formSubmitted")[0],
+        errors:req.flash("errors"),
+        token
+    })
+}
+
+// postResetPasswordToken
+
+export const postResetPasswordToken=async(req,res)=>{
+    const {token}=req.params;
+
+    const passwordResetData=await getResetPasswordToken(token);
+
+    if(!passwordResetData) {
+        req.flash("errors","Password Token is not Matching")
+        return res.send({message:"Look like your password reset link has either expired, or it is invlaid!"});
+    }
+
+    const {data,error}= verifyResetPasswordSchema.safeParse(req.body);
+    if(error){
+        const errorMessages=error.errors.map((err)=>err.message);
+        req.flash("errors",errorMessages[0]);
+        return res.redirect(`/reset-password/${token}`);
+    }
+
+    const {newPassword}= data;
+
+    const user =await findUserById(passwordResetData.userId);
+
+    await clearResetPasswordToken(user._id);
+
+    const hashedNewPassword = await argon2.hash(newPassword);
+    await userData.findByIdAndUpdate(user._id,
+        {password:hashedNewPassword},
+        {new:true}
+    );
+
+    return res.redirect('/login');
+
+
+
+}
+
+// ------------------------------------ End Reset Password -------------------

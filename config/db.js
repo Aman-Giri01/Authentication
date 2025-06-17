@@ -85,3 +85,32 @@ const verifyEmailSchema= mongoose.Schema({
 verifyEmailSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export const emailSchema=mongoose.model('Email',verifyEmailSchema);
+
+
+const passwordResetSchema=mongoose.Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+    tokenHash:{
+        type:String,
+        required:true
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now,
+        required:true
+    },
+    expiresAt:{
+        type:Date,
+        default:new Date(Date.now() + 60*60*1000) //1 hour
+        ,
+        required:true
+    }
+});
+
+// Optional: Create an index to automatically remove expired documents
+passwordResetSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
+export const resetPassword=mongoose.model('ResetPass',passwordResetSchema);

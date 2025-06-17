@@ -43,5 +43,13 @@ router.route('/edit-profile')
 router.route('/change-password')
 .get(auth.getChangePassword)
 .post(auth.postChangePassword);
+
+router.route('/reset-password')
+.get(auth.getResetPasswordPage)
+.post(auth.postResetPaswword)
+
+router.route('/reset-password/:token')
+.get(auth.getResetPasswordTokenPage)
+.post(auth.postResetPasswordToken)
 export const authRoute=router;
 
