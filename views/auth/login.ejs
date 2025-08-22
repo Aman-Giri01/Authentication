@@ -5,30 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login Page
     </title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
-    <form action="/login" method="post">
-        <div>
-            <label for="email">Email: </label>
-            <input type="email" name="email" >
-        </div>
-         <div>
-            <label for="password">Password: </label>
-            <input type="text" name="password" >
-        </div>
-        <%if (errors && errors.length >0){ %>
-            <% errors.forEach((error)=>{ %>
-                <p><%= error %></p>
-                <% }) %>
-            <% } %>
-        <div>
-            <button type="submit">Login</button>
-        </div>
+    <div class="container">
+        <div class="login">
+            <div class="form">
+                <h2>Login </h2>
+                <form action="/login" method="post">
+                    <div>
+                        <label for="email">Email: </label>
+                        <input type="email" name="email" >
+                    </div>
+                    <div>
+                        <label for="password">Password: </label>
+                        <input type="text" name="password" >
+                    </div>
+                    <%if (errors && errors.length >0){ %>
+                        <% errors.forEach((error)=>{ %>
+                            <p><%= error %></p>
+                            <% }) %>
+                        <% } %>
+                    <div>
+                        <button class="btn" type="submit">Login</button>
+                    </div>
 
-    </form>
-    <div>
-        <a href="/reset-password">Forgot password?</a>
+                </form>
+                <div>
+                    <a href="/reset-password">Forgot password?</a>
+                    or
+                    <a href="/register">Sign up</a>
+                </div>
+            </div>
+
+            <div class="img">
+                <img src="/image/login.avif" alt="login image">
+            </div>
+        </div>
     </div>
 </body>
 </html>

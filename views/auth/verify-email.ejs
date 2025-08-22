@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>verify email</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <%- include('../partials/nav_fotter')%>
@@ -38,7 +39,7 @@
                     title="Please enter an 8-digit token">
             </div>
             <input type="hidden" value="<%= email %>" name="email">
-            <button type="submit">Verify Code</button>
+            <button class="btn" type="submit">Verify Code</button>
         </form>
     </div>
 
