@@ -7,18 +7,19 @@
 }
 
 :root{
-
+    
     --primary-color:aliceblue;
     --btn-color:red;
     --form-color:white;
-    --supporting-color:rgba(251, 149, 149, 0.759);
+    --form-box:rgba(251, 149, 149, 0.759);
+    --supporting-color:rgba(242, 149, 149, 0.318);
 
 }
 
 body{
     background-color: var(--primary-color);
     min-height: 100dvh;
-    
+    font-size: 1.6rem;   
 }
 
 html{
@@ -26,9 +27,14 @@ html{
     font-size: 62.5%;
 }
 
+h2,h1{
+    color: red;
+    text-align: center;
+
+}
 nav{
     height:80px;
-    background: white;
+    background: var(--form-color);
     padding: 20px;
     display: grid;
     grid-template-columns: 20% 70%;
@@ -64,9 +70,9 @@ nav ul li{
       
 }
 nav ul li:hover{
-    border-bottom: solid 2px red;
+    border-bottom: solid 2px var(--btn-color);
     /* background-color: rgba(255, 200, 200, 0.704); */
-    background-color: rgba(242, 149, 149, 0.318);
+    background-color: var(--supporting-color);
     padding: 2px 7px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
@@ -78,7 +84,7 @@ nav ul li:hover{
 
 a{
     text-decoration: none;
-    color:red
+    color:var(--btn-color);
 }
 
 .container{
@@ -102,7 +108,7 @@ a{
 }
 
 .form {
-    padding-left:40px;
+    /* padding-left:40px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -110,13 +116,17 @@ a{
     font-size: 1.6rem;
 
 }
+form{
+    padding: 0 40px;
+}
 .form form input{
    padding:8px;
    display: block;
    font-size: 1.6rem;
-   width:90%;
+   width:100%;
    outline:none;
-   border: solid 1px rgba(251, 149, 149, 0.759);
+   /* border: solid 1px rgba(251, 149, 149, 0.759); */
+   border: solid 1px var(--form-box);
    border-radius: 5px;
    margin-bottom: 20px;
 }
@@ -124,6 +134,19 @@ a{
 .login .img img{
     width:100%;
     object-fit: contain;
+}
+.login .img{
+    animation: bubble 2s linear 0s infinite alternate ;
+}
+
+@keyframes bubble {
+    from{
+          transform: translateX(0);
+    }
+    to{
+            transform: translateY(-30px);
+    }
+    
 }
 .login h2{
   color:var(--btn-color);
@@ -139,6 +162,57 @@ a{
     border-radius: 5px;
     font-family: Roboto,sans-serif;
     font-size: 1.8rem;
-    width:90%;
+    width:100%;
+    cursor: pointer;
+
+    /* animation: shake 2s linear  infinite normal; */
     
+}
+
+/* @keyframes shake {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(3deg); }
+    50%  { transform: rotate(-3deg); }
+    75%  { transform: rotate(3deg); }
+    100% { transform: rotate(0deg); }
+
+    
+} */
+
+.verify{
+    width: 700px;
+    background-color: var(--form-color);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+}
+.notlogin-msg{
+
+    color: orange;
+    background-color: rgba(252, 240, 220, 0.649);
+    font-size: 1.6rem;
+    padding: 8px 20px;
+}
+
+.login-msg{
+    color:rgb(1, 198, 1);
+    font-size: 1.6rem;
+    padding: 8px 20px;
+    background-color: rgba(211, 251, 185, 0.758);
+}
+
+.para{
+    color: var(--btn-color);
+    background-color: var(--supporting-color);
+    margin: 20px 40px;
+    padding: 20px;
+}
+
+.verify-btn{
+    padding: 8px 20px; 
+    color:rgb(2, 150, 255); 
+    background-color: rgba(190, 235, 255, 0.736) ; 
+    border:none; 
+    font-size: 1.4rem;
+    border-radius: 20px;
 }

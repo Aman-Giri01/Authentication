@@ -8,9 +8,9 @@
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
     <% if(user) { %>
-        <h2>You are Logged in</h2>
+        <p class="login-msg">You are Logged in</p>
     <% } else { %>
-        <h2>You are not logged in </h2>
+        <p class="notlogin-msg">You are not logged in </p>
     <% } %>    
     <h1>Welcome  </h1>
 </body>

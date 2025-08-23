@@ -8,18 +8,25 @@
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
 
-    <form action="/edit-profile" method="post">
-        <h1>Edit Your Profile</h1>
-        <div>
-            <label for="name"></label>
-            <input type="text" name="name" value="<%= name %>" required>
-        </div>
-        <div>
-            <label for="newName">New Name: </label>
-            <input type="text" name="newName" >
-        </div>
+    <div class="container">
+        <div class="form verify">
+            <form action="/edit-profile" method="post">
+                <h2>Edit Your Profile</h2>
+                <div>
+                    <label for="name">Old Name:</label>
+                    <input type="text" name="name" value="<%= name %>" readonly>
+                </div>
+                <div>
+                    <label for="newName">New Name: </label>
+                    <input type="text" name="newName" >
+                </div>
 
-        <button type="submit">Edit</button>
-    </form>
+                <button class="btn" type="submit">Edit</button>
+            </form>
+
+        </div>
+    </div>
+
+    
 </body>
 </html>

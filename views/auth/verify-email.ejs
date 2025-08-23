@@ -8,39 +8,46 @@
 </head>
 <body>
     <%- include('../partials/nav_fotter')%>
-    <h1>Verify your email</h1>
-    <% if(user) { %>
-        <h2>You are Logged in</h2>
-    <% } else { %>
-        <h2>You are not logged in </h2>
-    <% } %>   
+    <!-- <h1>Verify your email</h1> -->
+     <div class="container">
+        <div class=" form verify">
+            <% if(user) { %>
+                <p class="login-msg">You are Logged in</p>
+            <% } else { %>
+                <p class="notlogin-msg">You are not logged in </h2>
+            <% } %>   
 
-    <div>
-        <p>Email: <%= email %></p>
-        <p>Your email has not been verifed yet.Please verify your
-            email by entering the 8 digit code or request a new verification link.
-        </p>
-        <form action="/resend-verification-link"
-        method="post">
-            <button type="submit">Resend Verification Link</button>
-        </form>
-    </div>
-    <div>
-        <form action="/verify-email-token" method="get">
             <div>
-                <label for="token">Enter 8 digit verification Code:</label>
-                <input 
-                    type="text"
-                    name="token"
-                    id="token"
-                    maxlength="8"
-                    required
-                    pattern="\d{8}"
-                    title="Please enter an 8-digit token">
+                <p style="padding-left: 40px;">Email: <%= email %></p>
+                <p class="notlogin-msg para">Your email has not been verifed yet.Please verify your
+                    email by entering the 8 digit code or request a new verification link.
+                </p>
+                <form action="/resend-verification-link"
+                method="post">
+                    <button  
+                    type="submit"
+                    class="verify-btn"
+                    >Resend Verification Link</button>
+                </form>
             </div>
-            <input type="hidden" value="<%= email %>" name="email">
-            <button class="btn" type="submit">Verify Code</button>
-        </form>
+            <div>
+                <form action="/verify-email-token" method="get">
+                    <div>
+                        <label for="token">Enter 8 digit verification Code:</label>
+                        <input 
+                            type="text"
+                            name="token"
+                            id="token"
+                            maxlength="8"
+                            required
+                            pattern="\d{8}"
+                            title="Please enter an 8-digit token">
+                    </div>
+                    <input type="hidden" value="<%= email %>" name="email">
+                    <button class="btn" type="submit">Verify Code</button>
+                </form>
+            </div>
+        </div>
     </div>
 
 </body>
