@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login Page
-    </title>
+    <title>login Page</title>
     <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/material-design-iconic-font@2.2.0/dist/css/material-design-iconic-font.min.css"
+    />
 </head>
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
@@ -24,7 +27,7 @@
                     </div>
                     <%if (errors && errors.length >0){ %>
                         <% errors.forEach((error)=>{ %>
-                            <p><%= error %></p>
+                            <p class="flash-error"><%= error %></p>
                             <% }) %>
                         <% } %>
                     <div>
@@ -32,17 +35,20 @@
                     </div>
 
                 </form>
-                <div>
+                <div class="link">
                     <a href="/reset-password">Forgot password?</a>
                     or
                     <a href="/register">Sign up</a>
                 </div>
             </div>
-
+            <div class="imgg">
             <div class="img">
                 <img src="/image/login.avif" alt="login image">
             </div>
+            </div>
         </div>
     </div>
+
+    <%- include('../partials/fotter.ejs')  %>
 </body>
 </html>

@@ -31,7 +31,7 @@
                     </div>
                     <%if (errors && errors.length >0){ %>
                         <% errors.forEach((error)=>{ %>
-                            <p><%= error %></p>
+                            <p class="flash-error"><%= error %></p>
                             <% }) %>
                         <% } %>
                     <div>
@@ -39,15 +39,18 @@
                     </div>
 
                 </form>
-                <div>
+                <div class="link">
                     <a href="/login">Already have Account?</a>
                 </div>
             </div>
            
+            <div class="imgg">
             <div class="img">
                 <img src="/image/register.avif" alt="login image">
             </div>
+            </div>
         </div>
     </div>
+    <%- include('../partials/fotter.ejs')  %>
 </body>
 </html>
