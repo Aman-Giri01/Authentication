@@ -7,24 +7,41 @@
 </head>
 <body>
     <%- include('../partials/nav_fotter.ejs')  %>
-    <div class="container">
-        <div class="form verify">
-            <!-- <div><%= user.id %></div> -->
-            <div><%= user.name %></div>
-            <div><%= user.email %></div>
-            <div><%= user.createdAt %></div>
-
-            <span>Email Verification:</span>
-            <% if(user.isEmailValid) { %>
-                <span>verified</span>
+    <div class="prof-contain  ">
+        <div class="prof">
+            
+                <!-- <div><%= user.id %></div> -->
+                <div class="profile-pic">
+                    <span><%= user.name.charAt(0).toUpperCase() %></span>
+                </div>
+                <div> <%= user.name %></div>
+                <div> <i class="zmdi zmdi-email"></i><%= user.email %></div>
+                <div><i class="zmdi zmdi-calendar"></i> Member since <%= new
+              Date(user.createdAt).toLocaleDateString() %></div>
+               
+        </div>
+        <div>
+            <div class="veri">
+            <!-- <% if(user.isEmailValid) { %>
+                <span><i class="zmdi zmdi-check-circle"></i>verified</span>
                 <% }else { %>
-                <span class="para">Not verified</span>
+                <span class=""><i class="zmdi zmdi-alert-circle"></i> Not verified</span>
                 <div>
                     <a class="verify-btn" href="/verify-email">Verify Now</a>
                 </div>
                 
-                <% } %>
+                <% } %> -->
 
+                <% if(user.isEmailValid) { %>
+                    <span class="verified"><i class="zmdi zmdi-check-circle"></i> Verified</span>
+                <% } else { %>
+                    <span class="not-verified"><i class="zmdi zmdi-alert-circle"></i> Not Verified</span>
+                    <div>
+                        <a class="verify-btn" href="/verify-email">Verify Now</a>
+                    </div>
+                <% } %>
+                </div>
+                <div class="edit">
                 <div>
                     <a class="verify-btn" href="/edit-profile">Edit Profile</a>
                 </div>
@@ -32,8 +49,9 @@
                 <div>
                     <a class="verify-btn" href="/change-password">Change Password</a>
                 </div>
+                </div>
          </div>
-         </div>
+     </div>
   <%- include('../partials/fotter.ejs')  %>
 </body>
 </html>
