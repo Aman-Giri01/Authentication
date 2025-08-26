@@ -1,18 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | MyAuthApp</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main>
+
     <%- include('../partials/nav_fotter.ejs')  %>
-    <% if(user) { %>
-        <p class="login-msg"><i class="zmdi zmdi-check-circle"></i>You are Logged in</p>
-    <% } else { %>
-        <p class="notlogin-msg"><i class="zmdi zmdi-alert-circle"></i>You are not logged in </p>
-    <% } %>    
-    <h1>Welcome  </h1>
+        <% if(user) { %>
+            <p class="login-msg"><i class="zmdi zmdi-check-circle"></i>You are Logged in</p>
+        <% } else { %>
+            <p class="notlogin-msg"><i class="zmdi zmdi-alert-circle"></i>You are not logged in </p>
+        <% } %>  
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-container">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Secure Authentication Platform
+            </div>
+            <h1 class="hero-title">
+              Secure Authentication
+              <span class="gradient-text">Made Simple</span>
+            </h1>
+            <p class="hero-description">
+              Build secure, scalable authentication with modern technologies like Argon2 and JWT.
+              Easy to integrate and developer-friendly.
+            </p>
+            
+            <% if(!user) { %>
+
+            <div class="hero-actions">
+              <a href="/register" class="btn btn-primary btn-large">
+                Get Started Free
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12,5 19,12 12,19"></polyline>
+                </svg>
+              </a>
+              <a href="/login" class="btn btn-outline btn-large">Sign In</a>
+            </div>
+
+             <% } %> 
+            <!-- <div class="hero-features">
+              <div class="feature-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+                No credit card required
+              </div>
+              <div class="feature-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+                5-minute setup
+              </div>
+            </div> -->
+          </div>
+          <div class="hero-visual">
+            <div class="security-card-demo">
+              <div class="demo-header">
+                <div class="demo-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <circle cx="12" cy="16" r="1"></circle>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <h3>Secure by Default</h3>
+              </div>
+              <div class="demo-features">
+                <div class="demo-feature">
+                  <div class="feature-dot blue"></div>
+                  <span>Argon2 password hashing</span>
+                </div>
+                <div class="demo-feature">
+                  <div class="feature-dot purple"></div>
+                  <span>JWT-based session security</span>
+                </div>
+                <div class="demo-feature">
+                  <div class="feature-dot green"></div>
+                  <span>HTTPS secure communication</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="features-container">
+          <div class="section-header">
+            <h2>Everything you need for authentication</h2>
+            <p>From simple login forms to enterprise security, we've got you covered with battle-tested features.</p>
+          </div>
+
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <circle cx="12" cy="16" r="1"></circle>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <h3>Secure Authentication</h3>
+              <p>Encryption with Argon2 hashing and JWT tokens for maximum security.</p>
+              <ul class="feature-list">
+                <li>Password hashing </li>
+                <li>JWT token management</li>
+                <li>Session security</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon purple">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <h3>User Management</h3>
+              <p>Complete user lifecycle management with profile editing and account verification.</p>
+              <ul class="feature-list">
+                <li>Profile management</li>
+                <li>Email verification</li>
+                <li>Account settings</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon green">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <h3>Password Recovery</h3>
+              <p>Secure password reset flow with email verification and time-limited tokens.</p>
+              <ul class="feature-list">
+                <li>Email-based reset</li>
+                <li>Secure token validation</li>
+                <li>Time-limited access</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon indigo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <h3>Responsive Design</h3>
+              <p>Beautiful, mobile-first design that works perfectly on all devices and screen sizes.</p>
+              <ul class="feature-list">
+                <li>Mobile-first approach</li>
+                <li>Works on all screen sizes and browsers</li>
+                <li>Modern UI/UX</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon yellow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <h3>Lightning Fast</h3>
+              <p>Reliable performance with a lightweight backend and responsive UI.</p>
+              <ul class="feature-list">
+                <li>Node.js + Express.js backend</li>
+                <li>MongoDB for scalable storage</li>
+                <li>Quick and secure authentication</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon red">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <circle cx="12" cy="16" r="1"></circle>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <h3>Enterprise Ready</h3>
+              <p>Built with string security and scalability in mind.</p>
+              <ul class="feature-list">
+                <li>Email verification</li>
+                <li>Session Security</li>
+                <li>Token-based authentication</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tech Stack Section -->
+      <section class="tech-stack">
+        <div class="tech-container">
+          <div class="section-header">
+            <h2>Built with modern technology</h2>
+            <p>Powered by industry-leading tools and frameworks</p>
+          </div>
+
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-icon green">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <span>Node.js</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon gray">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                </svg>
+              </div>
+              <span>Express.js</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon green">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <span>MongoDB</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon purple">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <circle cx="12" cy="16" r="1"></circle>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <span>JWT</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon red">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <circle cx="12" cy="16" r="1"></circle>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <span>Argon2</span>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <span>HTML/CSS/JS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta">
+        <div class="cta-container">
+          <h2>Ready to secure your application?</h2>
+          <p>Join developers who trust MyAuthApp for their authentication needs.</p>
+
+          <% if(!user) { %>
+
+          <div class="cta-actions">
+            <a href="/register" class="btn btn-primary btn-large">Start Free Trial</a>
+            <a href="/login" class="btn btn-outline btn-large">Sign In</a>
+          </div>
+
+          <% } %>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  
+
+  <%- include('../partials/fotter.ejs')  %>
+
 </body>
 </html>
