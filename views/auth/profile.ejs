@@ -41,14 +41,35 @@
                     </div>
                 <% } %>
                 </div>
-                <div class="edit">
-                <div>
-                    <a class="verify-btn" href="/edit-profile">Edit Profile</a>
-                </div>
+                    <div class="edit">
+                    <div>
+                        <a class="verify-btn" href="/edit-profile">Edit Profile</a>
+                    </div>
 
-                <div>
-                    <a class="verify-btn" href="/change-password">Change Password</a>
-                </div>
+                    <!-- <div>
+                        <a class="verify-btn" href="/change-password">Change Password</a>
+                    </div> -->
+
+<!------------------------------For demo email-------------- -->
+                    <div>
+                        <% if (user.email === "test@gmail.com") { %>
+                            <button class="verify-btn" type="button" onclick="showDemoMsg()">
+                                Change Password
+                            </button>
+                            <p id="demo-msg" class="flash-error" style="display: none;">
+                                Password change is disabled for the demo account.
+                            </p>
+                        <% } else { %>
+                            <a class="verify-btn" href="/change-password">Change Password</a>
+                        <% } %>
+                    </div>
+
+                    <script>
+                        function showDemoMsg() {
+                            document.getElementById("demo-msg").style.display = "block";
+                        }
+                    </script>
+<!--     ---------------------------------------------------- -->
                 </div>
          </div>
      </div>

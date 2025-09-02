@@ -19,6 +19,17 @@ export const loginUserSchema=z.object({
     .string()
     .min(6,{message:"Password must be atleast 6 character long."})
     .max(100,{message:"Paswword must be no more than 100 characters long."})
+    
+    .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+    })
+    .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+    })
+    .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+    })
+
 });
 
 export const registerUserSchema=loginUserSchema.extend({
@@ -31,6 +42,16 @@ export const registerUserSchema=loginUserSchema.extend({
     .string()
     .min(6,{message:"Password must be atleast 6 character long."})
     .max(100,{message:"Paswword must be no more than 100 characters long."})
+
+    .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+    })
+    .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+    })
+    .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+    })    
 
     
 })
@@ -50,7 +71,17 @@ export const verifyPasswordSchema=z.object({
     newPassword:z
     .string()
     .min(6,{message:"New Password must be atleast 6 characters long."})
-    .max(100,{message:"New password must br no more than 100 characters."}),
+    .max(100,{message:"New password must br no more than 100 characters."})
+    .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+    })
+    .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+    })
+    .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+    })
+    ,
     confirmPassword:z
     .string()
     .min(6,{
@@ -68,7 +99,17 @@ export const verifyResetPasswordSchema=z.object({
      newPassword:z
     .string()
     .min(6,{message:"New Password must be atleast 6 characters long."})
-    .max(100,{message:"New password must br no more than 100 characters."}),
+    .max(100,{message:"New password must br no more than 100 characters."})
+    .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+    })
+    .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+    })
+    .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+    })
+    ,
     confirmPassword:z
     .string()
     .min(6,{

@@ -241,3 +241,5 @@ header .container{display:flex;align-items:center;justify-content:space-between;
     scale:1
   }
 }
+
+.cred{ padding:2rem; width:220px; border-radius: 8px; border-left:3px solid red; box-shadow:rgba(99,99,99,0.2) 0 2px 8px 0; margin-top: 3px; display: flex; flex-direction: column; gap:.5rem}

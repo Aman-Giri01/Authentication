@@ -19,11 +19,11 @@
                 <form action="/login" method="post">
                     <div>
                         <label for="email">Email: </label>
-                        <input type="email" name="email" >
+                        <input id="em" type="email" name="email" >
                     </div>
                     <div>
                         <label for="password">Password: </label>
-                        <input type="text" name="password" >
+                        <input id="pas" type="password" name="password" >
                     </div>
                     <%if (errors && errors.length >0){ %>
                         <% errors.forEach((error)=>{ %>
@@ -40,6 +40,12 @@
                     or
                     <a href="/register">Sign up</a>
                 </div>
+                <div class="cred">
+                    <h3>demo credentail</h3>
+                    <p>email: test@gmail.com</p>
+                    <p>password:******</p>
+                    <button id="btnnn" class="btn">use it</button>
+                </div>
             </div>
             <div class="imgg">
             <div class="img">
@@ -48,7 +54,25 @@
             </div>
         </div>
     </div>
-
+ 
     <%- include('../partials/fotter.ejs')  %>
+
+    <script>
+        const email=document.getElementById('em');
+        const pass=document.getElementById('pas');
+        const btn=document.getElementById('btnnn');
+
+        btn.addEventListener('click',(e)=>{
+            e.preventDefault();
+
+            email.value='test@gmail.com';
+            pass.value='Test1234';
+        })
+          
+        
+        
+        
+
+    </script>
 </body>
 </html>
