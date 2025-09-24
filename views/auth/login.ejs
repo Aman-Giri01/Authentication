@@ -21,9 +21,10 @@
                         <label for="email">Email: </label>
                         <input id="em" type="email" name="email" >
                     </div>
-                    <div>
+                    <div class="password-wrapper">
                         <label for="password">Password: </label>
                         <input id="pas" type="password" name="password" >
+                        <i class="zmdi zmdi-eye" id="togglePassword"></i>
                     </div>
                     <%if (errors && errors.length >0){ %>
                         <% errors.forEach((error)=>{ %>
@@ -67,7 +68,22 @@
 
             email.value='test@gmail.com';
             pass.value='Test1234';
+
+            
         })
+
+
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#pas');
+
+        togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        
+        
+        this.classList.toggle('zmdi-eye');
+        this.classList.toggle('zmdi-eye-off');
+});
           
         
         

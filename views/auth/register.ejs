@@ -21,13 +21,15 @@
                         <label for="email">Email: </label>
                         <input type="email" name="email" >
                     </div>
-                    <div>
+                    <div class="password-wrapper">
                         <label for="password">Password: </label>
-                        <input type="password" name="password" >
+                        <input class="pas" type="password" name="password" >
+                        <i class="zmdi zmdi-eye togglePassword"></i>
                     </div>
-                    <div>
+                    <div class="password-wrapper">
                         <label for="confirmPassword">Confirm Password: </label>
-                        <input type="password" name="confirmPassword" >
+                        <input class="pas" type="password" name="confirmPassword" >
+                        <i class="zmdi zmdi-eye togglePassword"></i>
                     </div>
                     <%if (errors && errors.length >0){ %>
                         <% errors.forEach((error)=>{ %>
@@ -52,5 +54,22 @@
         </div>
     </div>
     <%- include('../partials/fotter.ejs')  %>
+    <script>
+
+        const togglePasswords = document.querySelectorAll('.togglePassword');
+        const passwords = document.querySelectorAll('.pas');
+
+        togglePasswords.forEach((icon, index) => {
+            icon.addEventListener('click', function () {
+            const input = passwords[index]; 
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+
+            this.classList.toggle('zmdi-eye');
+            this.classList.toggle('zmdi-eye-off');
+                });
+        });
+
+    </script>
 </body>
 </html>
