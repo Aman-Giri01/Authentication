@@ -162,7 +162,10 @@ export const createVerifyEmailLink=async({email,token})=>{
   // const uriEncodedEmail=encodeURIComponent(email);
   // return `${process.env.FRONTEND_URL}/verify-email-token?token=${token}&email=${uriEncodedEmail}`
 
-   const url = new URL(`${process.env.FRONTEND_URL}/verify-email`);
+  //  const url = new URL(`${process.env.FRONTEND_URL}/verify-email`);
+  const url = new URL('/verify-email', process.env.FRONTEND_URL);
+
+   console.log(url);
   url.searchParams.append('token', token);
   url.searchParams.append('email', email);
   return url.toString();
