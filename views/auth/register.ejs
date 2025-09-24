@@ -15,20 +15,20 @@
                 <form action="/register" method="post">
                     <div>
                         <label for="name">Name: </label>
-                        <input type="text" name="name" >
+                        <input type="text" name="name" autocomplete="off">
                     </div>
                     <div>
                         <label for="email">Email: </label>
-                        <input type="email" name="email" >
+                        <input type="email" name="email" autocomplete="off">
                     </div>
                     <div class="password-wrapper">
                         <label for="password">Password: </label>
-                        <input class="pas" type="password" name="password" >
+                        <input class="pas" type="password" name="password" autocomplete="off" >
                         <i class="zmdi zmdi-eye togglePassword"></i>
                     </div>
                     <div class="password-wrapper">
                         <label for="confirmPassword">Confirm Password: </label>
-                        <input class="pas" type="password" name="confirmPassword" >
+                        <input class="pas" type="password" name="confirmPassword" autocomplete="off">
                         <i class="zmdi zmdi-eye togglePassword"></i>
                     </div>
                     <%if (errors && errors.length >0){ %>

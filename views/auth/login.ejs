@@ -19,11 +19,11 @@
                 <form action="/login" method="post">
                     <div>
                         <label for="email">Email: </label>
-                        <input id="em" type="email" name="email" >
+                        <input id="em" type="email" name="email"  autocomplete="off">
                     </div>
                     <div class="password-wrapper">
                         <label for="password">Password: </label>
-                        <input id="pas" type="password" name="password" >
+                        <input id="pas" type="password" name="password" autocomplete="off" >
                         <i class="zmdi zmdi-eye" id="togglePassword"></i>
                     </div>
                     <%if (errors && errors.length >0){ %>

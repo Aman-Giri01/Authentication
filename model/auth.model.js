@@ -218,7 +218,7 @@ export const sendNewVerifyEmailLink=async({userId,email})=>{
     to:email,
     subject:"verify your email",
     html:`
-    <h1> Click the link below ti verify your email</h1>
+    <h1> Click the link below link verify your email</h1>
     <p>You can use this token: <code>${randomToken}</code></p>
     <a href="${verifyEmailLink}">Verify Email </a>`
    }).catch(console.error);
